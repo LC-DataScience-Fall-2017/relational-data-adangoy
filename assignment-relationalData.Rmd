@@ -119,3 +119,9 @@ All three tables have PlayerIDs, YearIDs, Stints, and TeamIDs. So they can all b
 
 __________
 
+```{r}
+nycflights13::flights %>%
+  anti_join(planes, by = "tailnum") %>%
+  count(carrier, sort = TRUE)
+```
+
