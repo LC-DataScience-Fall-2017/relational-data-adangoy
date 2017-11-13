@@ -1,0 +1,80 @@
+---
+title: "Relational Data Assignment"
+author: "Adira Dangoy"
+date: "November 9, 2017"
+output: html_document
+---
+Mutating joins, which add new variables to one data frame from matching observations in another.
+
+Filtering joins, which filter observations from one data frame based on whether or not they match an observation in the other table.
+
+Set operations, which treat observations as if they were set elements.
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+13.2.1 Exercises
+1.) Variables: tail number, origin, dest, carrier.
+Tables: arilines, planes, airports.
+
+2.) Weather and airports are connected with origin. Origin on weather should have an arrow pointing to origin on flights which is a sub for airports. 
+
+3.)It would have the additional relation with dest in flights.
+
+4.) Primary keys would be month and day from the weather table. I would create these into a new table only for special days.
+
+_________________
+A primary key uniquely identifies an observation in its own table. For example, planes$tailnum is a primary key because it uniquely identifies each plane in the planes table.
+
+A foreign key uniquely identifies an observation in another table. For example, the flights$tailnum is a foreign key because it appears in the flights table where it matches each flight to a unique plane.
+
+13.3.1 Exercises
+1.) 
+```{r}
+flights %>% 
+  arrange(year, month, day, sched_dep_time, carrier, flight) %>%
+  mutate(flight_id = row_number()) 
+```
+
+2.)
+```{r}
+Lahman::Batting
+```
+
+Primary Keys: YearID, stint, and TeamID
+
+```{r}
+babynames::babynames
+```
+Primary Keys: year, sex, names
+
+```{r}
+nasaweather::atmos
+```
+Primary Keys: lat, long, year, month.
+
+```{r}
+fueleconomy::vehicles
+```
+Primary Key: ID
+```{r}
+ggplot2::diamonds
+```
+No primary key.
+
+
+
+
+3.)
+```{r}
+Lahman::Batting
+```
+```{r}
+Lahman::Master
+```
+```{r}
+Lahman::Salaries
+```
+
+
