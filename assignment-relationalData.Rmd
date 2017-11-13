@@ -70,11 +70,52 @@ No primary key.
 ```{r}
 Lahman::Batting
 ```
+Batting
+primary key: playerID, yearID, stint
+foreign keys:
+playerID -> Master.playerID
+
 ```{r}
 Lahman::Master
 ```
+Master
+Primary Key: playerID
+
 ```{r}
 Lahman::Salaries
 ```
+Salaries
+Primary Key: yearID, teamID, PlayerID
+Foreign key: playerID>master.playerID.
 
+```{r}
+Lahman::Managers
+```
+Managers
+Primary Key: playerID,yearID,teamID.
+Foreign Key:playerID > Master.teamID
+
+```{r}
+Lahman::AwardsManagers
+```
+
+Awards Managers
+Primary Key: playerID, awardID, yearID
+playerID -> Master.playerID
+playerID, yearID, lgID > Managers.playerID, yearID, lgID
+
+```{r}
+Lahman::Batting
+```
+
+```{r}
+Lahman::Pitching
+```
+
+```{r}
+Lahman::Fielding
+```
+All three tables have PlayerIDs, YearIDs, Stints, and TeamIDs. So they can all be traces back to eachother and you can compare the player IDs to see their stats for all three catagories.
+
+__________
 
