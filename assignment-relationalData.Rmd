@@ -124,4 +124,130 @@ nycflights13::flights %>%
   anti_join(planes, by = "tailnum") %>%
   count(carrier, sort = TRUE)
 ```
+```{r}
+airports %>%
+  semi_join(flights, c("faa" = "dest")) %>%
+  ggplot(aes(lon, lat)) +
+    borders("state") +
+    geom_point() +
+    coord_quickmap()
+```
+1.)
+```{r}
+avg_dest_delays <-
+  flights %>%
+  group_by(dest) %>%
+  
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>%
+  inner_join(airports, by = c(dest = "faa"))
+
+avg_dest_delays %>%
+  ggplot(aes(lon, lat, colour = delay)) +
+    borders("state") +
+    geom_point() +
+    coord_quickmap()
+```
+
+ 2.)
+ 
+
+```{R}
+flights %>%
+  left_join(airports, by = c(dest = "faa")) %>%
+  left_join(airports, by = c(origin = "faa")) %>%
+  head()
+```
+
+
+3.)
+
+```{r}
+plane_ages <- 
+  planes %>%
+  mutate(age = 2013 - year) %>%
+  select(tailnum, age)
+
+flights %>%
+  inner_join(plane_ages, by = "tailnum") %>%
+  group_by(age) %>%
+  filter(!is.na(dep_delay)) %>%
+  summarise(delay = mean(dep_delay)) %>%
+  ggplot(aes(x = age, y = delay)) +
+  geom_point() +
+  geom_line()
+```
+```{r}
+flight_weather <-
+  flights %>%
+  inner_join(weather, by = c("origin" = "origin",
+                            "year" = "year",
+                            "month" = "month",
+                            "day" = "day",
+                            "hour" = "hour"))
+
+flight_weather %>%
+  group_by(precip) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(x = precip, y = delay)) +
+    geom_line() + geom_point()
+```
+
+
+5.)
+```{r}
+library(viridis)
+```
+
+```{r}
+flights %>%
+  filter(year == 2013, month == 6, day == 13) %>%
+  group_by(dest) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>%
+  inner_join(airports, by = c("dest" = "faa")) %>%
+  ggplot(aes(y = lat, x = lon, size = delay, colour = delay)) +
+  borders("state") +
+  geom_point() +
+  coord_quickmap() + 
+  scale_color_viridis()
+```
+
+There was a large series of derechos that caused several tornados in the US you can see several delays in the south where it touched and one large point in the south during the storms had 150 delays.
+___________
+
+
+1.)
+```{r}
+flights %>%
+  anti_join(planes, by = "tailnum") %>%
+count
+```
+```{r}
+planes
+```
+AA and MQ don't Use tail numbers
+
+2.)
+```{r}
+planes_100Flights <- 
+  filter(flights) %>%
+  group_by(tailnum) %>%
+  count() %>%
+  filter(n > 100)
+
+flights %>%
+  semi_join(planes_gt100, by = "tailnum")
+```
+
+3.)
+```{r}
+(fueleconomy::vehicles)
+```
+```{r}
+(fueleconomy::common)
+```
+
+```{r}
+fueleconomy::vehicles %>%
+  semi_join(fueleconomy::common, by = c("make", "model"))
+```
 
