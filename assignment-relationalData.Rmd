@@ -263,5 +263,13 @@ anti_join(airports, flights, by = c("faa" = "dest"))
 These are US airports that don’t have a flight in the data. This shows us that there were no flights to that aiport from New York during this period.
 
 5.)I believe there is a unique relationship between the two. All tailnumbers have a unique pattern and each airline has their own planes. There is a chance that the carriers could merge or sell planes to other carriers but this isn't really shown in our data.
+```{r}
+flights %>%
+  group_by(tailnum, carrier) %>%
+  count() %>%
+  filter(n() > 1) %>%
+  select(tailnum) %>%
+  distinct()
+```
 
 
